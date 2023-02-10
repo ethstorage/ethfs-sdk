@@ -1,10 +1,7 @@
-import regIdCardName from './core/regIdCardName'
-import regIdCardCode from './core/regIdCardCode'
+import EthStorageUploadSdk from './core/EthStorageUploadSdk'
 export {
-  regIdCardName,
-  regIdCardCode
+  EthStorageUploadSdk
 }
 export default {
-  regIdCardName,
-  regIdCardCode
+  EthStorageUploadSdk
 }

@@ -17,6 +17,8 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "dayjs": "^1.10.8",
+    "ethers": "^5.7.2",
+    "js-sha3": "^0.8.0",
     "qs": "^6.9.6"
   },
   "devDependencies": {
@@ -46,9 +48,9 @@
   },
   "homepage": "https://github.com/ethstorage/ethfs-sdk/main/",
   "keywords": [
-    "Utils",
-    "JavaScript",
-    "Function"
+    "EthStorage",
+    "web3://",
+    "Web3"
   ],
   "browserslist": [
     "> 1%",

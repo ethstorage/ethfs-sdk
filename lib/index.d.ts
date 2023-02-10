@@ -1,8 +1,6 @@
-import regIdCardName from './core/regIdCardName';
-import regIdCardCode from './core/regIdCardCode';
-export { regIdCardName, regIdCardCode };
+import EthStorageUploadSdk from './core/EthStorageUploadSdk';
+export { EthStorageUploadSdk };
 declare const _default: {
-    regIdCardName: typeof regIdCardName;
-    regIdCardCode: typeof regIdCardCode;
+    EthStorageUploadSdk: typeof EthStorageUploadSdk;
 };
 export default _default;
