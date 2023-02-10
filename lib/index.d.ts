@@ -1,6 +1,6 @@
-import EthStorageUploadSdk from './core/EthStorageUploadSdk';
-export { EthStorageUploadSdk };
+import upload from './core/upload';
+export { upload };
 declare const _default: {
-    EthStorageUploadSdk: typeof EthStorageUploadSdk;
+    upload: typeof upload;
 };
 export default _default;

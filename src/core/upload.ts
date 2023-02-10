@@ -19,6 +19,14 @@ const REMOVE_FAIL = -1;
 const REMOVE_NORMAL = 0;
 const REMOVE_SUCCESS = 1;
 
+// Exported Types
+interface File extends Blob {
+  readonly lastModified: number;
+  readonly name: string;
+  readonly webkitRelativePath: string;
+  size: number;
+}
+
 const bufferChunk = (buffer, chunkSize) => {
   let i = 0;
   let result = [];
@@ -29,15 +37,6 @@ const bufferChunk = (buffer, chunkSize) => {
   }
   return result;
 }
-
-// Exported Types
-interface File extends Blob {
-  readonly lastModified: number;
-  readonly name: string;
-  readonly webkitRelativePath: string;
-  size: number;
-}
-
 
 function stringToHex(s:string) :string{
   return ethers.utils.hexlify(ethers.utils.toUtf8Bytes(s));
@@ -76,8 +75,13 @@ async function checkAndDelete(contract, hexName, chunkLength) {
   return REMOVE_NORMAL;
 }
 
-async function upload(webProvider, address, file: File | string, dirPath ?: string) {
-  console.log("---start--")
+function FileContract (_provider, _address) {
+  let provider = new ethers.providers.Web3Provider(_provider);
+  let contract = new ethers.Contract(_address, fileAbi, provider);
+  return contract.connect(provider.getSigner());
+}
+
+async function upload(provider, address, file: File | string, dirPath ?: string) {
   if (!file) {
     throw new Error(`missing file, file : ${file}`);
   }
@@ -86,9 +90,8 @@ async function upload(webProvider, address, file: File | string, dirPath ?: stri
   }
 
   // init
-  let provider = new ethers.providers.Web3Provider(webProvider);
-  let contract = new ethers.Contract(address, fileAbi, provider);
-  contract.connect(provider.getSigner());
+  const contract = FileContract(provider, address);
+  const {chainId} = await contract.provider.getNetwork()
 
   // load file
   let content, name, fileSize;
@@ -110,7 +113,6 @@ async function upload(webProvider, address, file: File | string, dirPath ?: stri
     fileSize = file.size;
   }
   const hexName = stringToHex(name);
-  const {chainId} = await provider.getNetwork()
 
 
   // Data need to be sliced if file > 475K
@@ -138,9 +140,7 @@ async function upload(webProvider, address, file: File | string, dirPath ?: stri
 
   const clearState = await checkAndDelete(contract, hexName, chunks.length);
   if (clearState === REMOVE_FAIL) {
-    // onError(new Error("Check Old File Fail!"));
-    // return;
-    return {upload: 0};
+    throw new Error("Check Old File Fail!");
   }
 
   let cost = 0;
