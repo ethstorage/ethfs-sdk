@@ -1,7 +1,7 @@
-import EthStorageUploadSdk from './core/EthStorageUploadSdk'
+import upload from './core/upload'
 export {
-  EthStorageUploadSdk
+  upload
 }
 export default {
-  EthStorageUploadSdk
+  upload
 }
