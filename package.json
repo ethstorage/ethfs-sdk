@@ -1,0 +1,65 @@
+{
+  "name": "ethfs-sdk",
+  "version": "1.0.0",
+  "description": "eth storage upload sdk",
+  "main": "lib/index.cjs.js",
+  "module": "lib/index.esm.js",
+  "typings": "lib/index.d.ts",
+  "browser": "lib/index.umd.js",
+  "mainEntryPointFilePath": "lib/index.d.ts",
+  "scripts": {
+    "rollup:dev": "rollup -c build/rollup/rollup.config.dev.js",
+    "rollup:build": "rimraf lib && rollup -c build/rollup/rollup.config.prod.js && rollup -c build/rollup/rollup.config.prod.uglify.js",
+    "build": "npm run rollup:build",
+    "pub:dev": "npm run rollup:build && npm publish --tag beta",
+    "pub": "npm run rollup:build && npm publish"
+  },
+  "dependencies": {
+    "core-js": "^3.8.3",
+    "dayjs": "^1.10.8",
+    "qs": "^6.9.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-typescript": "^7.16.7",
+    "@rollup/plugin-babel": "^5.2.3",
+    "@rollup/plugin-commonjs": "^17.1.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^11.1.0",
+    "@rollup/plugin-replace": "^2.3.4",
+    "js-beautify": "^1.13.5",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.38.2",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "rollup-plugin-uglify": "^6.0.4",
+    "tslib": "^2.3.1",
+    "typescript": "^4.6.2",
+    "vuepress": "^1.8.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ethstorage/ethfs-sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/ethstorage/ethfs-sdk/issues"
+  },
+  "homepage": "https://github.com/ethstorage/ethfs-sdk/main/",
+  "keywords": [
+    "Utils",
+    "JavaScript",
+    "Function"
+  ],
+  "browserslist": [
+    "> 1%",
+    "last 3 versions",
+    "Firefox ESR",
+    "ie >= 8",
+    "iOS >= 8",
+    "Android >= 4",
+    "Safari >= 8",
+    "Chrome >= 40"
+  ],
+  "author": "ethsorage",
+  "license": "ISC"
+}
