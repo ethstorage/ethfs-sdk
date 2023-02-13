@@ -81,12 +81,21 @@ function FileContract (_provider, _address) {
   return contract.connect(provider.getSigner());
 }
 
-async function upload(provider, address, file: File | string, dirPath ?: string) {
+const noop = () => {};
+
+async function upload(provider, address,
+                      file: File | string,
+                      dirPath: string = "",
+                      onProgress: Function = noop,
+                      onSuccess: Function = noop,
+                      onError: Function = noop) {
   if (!file) {
-    throw new Error(`missing file, file : ${file}`);
+    onError(`missing file!`);
+    return;
   }
   if (!address) {
-    throw new Error(`missing contract address`);
+    onError(`missing contract address!`);
+    return;
   }
 
   // init
@@ -104,7 +113,8 @@ async function upload(provider, address, file: File | string, dirPath ?: string)
       name = dirPath ? dirPath + name : name;
       fileSize = fileStat.size;
     } else {
-      throw new Error(`Not support file dir, file dir: ${file}`);
+      onError(`Not support file dir, file dir: ${file}`);
+      return;
     }
   } else {
     // raw file
@@ -140,7 +150,8 @@ async function upload(provider, address, file: File | string, dirPath ?: string)
 
   const clearState = await checkAndDelete(contract, hexName, chunks.length);
   if (clearState === REMOVE_FAIL) {
-    throw new Error("Check Old File Fail!");
+    onError(`Check Old File Fail!`);
+    return;
   }
 
   let cost = 0;
@@ -149,6 +160,7 @@ async function upload(provider, address, file: File | string, dirPath ?: string)
     cost = Math.floor((fileSize + 326) / 1024 / 24);
   }
 
+  onProgress(0, chunks.length, file);
   let uploadState = true;
   for (const index in chunks) {
     const chunk = chunks[index];
@@ -159,8 +171,8 @@ async function upload(provider, address, file: File | string, dirPath ?: string)
       const localHash = '0x' + sha3(chunk);
       let hash = await contract.getChunkHash(hexName, index);
       if (localHash === hash) {
-        // TODO progress
         console.log(`File chunkId: ${index}: The data is not changed.`);
+        onProgress(index, chunks.length, file);
         continue;
       }
     }
@@ -178,12 +190,12 @@ async function upload(provider, address, file: File | string, dirPath ?: string)
     const receipt = await tx.wait();
     if (!receipt.status) {
       uploadState = false;
-      // TODO upload fail
+      onError(`File chunkId: ${index} upload fail`);
       break;
     }
+    onProgress(index, chunks.length, file);
   }
-
-  // upload finish
+  onSuccess(file);
 }
 
 export default upload;
