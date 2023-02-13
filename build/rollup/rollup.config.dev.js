@@ -1,9 +1,8 @@
-import json from '@rollup/plugin-json' // 解析json文件
-import { babel } from '@rollup/plugin-babel' // 转换es6语法
-import { nodeResolve } from '@rollup/plugin-node-resolve' // 处理node_modeules依赖
-import commonjs from '@rollup/plugin-commonjs' // 处理 common 模块js
-import replace from '@rollup/plugin-replace' // 全局替换
-import { version } from '../../package.json'
+import json from '@rollup/plugin-json'
+import {babel} from '@rollup/plugin-babel'
+import {nodeResolve} from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import replace from '@rollup/plugin-replace'
 
 export default {
   input: 'src/index.js',
@@ -30,7 +29,7 @@ export default {
     ),
     babel(
       {
-        babelHelpers: 'bundled', // 需要指定，不然会提示警告
+        babelHelpers: 'bundled',
         exclude: 'node_modules/**'
       }
     ),
@@ -39,12 +38,12 @@ export default {
     }),
     commonjs(
       {
-      sourceMap: false // 不映射源文件，提高性能
+      sourceMap: false
       }
     ),
     replace({
       'process.env.NODE_ENV': JSON.stringify('development')
     })
   ],
-  external: ['fs'] // 忽略的依赖
+  external: ['fs']
 }

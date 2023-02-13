@@ -1,10 +1,11 @@
 import path from 'path'
-import json from '@rollup/plugin-json' // 解析json文件
-import { babel } from '@rollup/plugin-babel' // 转换es6语法
-import { nodeResolve } from '@rollup/plugin-node-resolve' // 处理node_modeules依赖
+import json from '@rollup/plugin-json'
+import {babel} from '@rollup/plugin-babel'
+import {nodeResolve} from '@rollup/plugin-node-resolve'
 import typescript from 'rollup-plugin-typescript2';
-import commonjs from '@rollup/plugin-commonjs' // 处理 common 模块js
-import replace from '@rollup/plugin-replace' // 全局替换
+import commonjs from '@rollup/plugin-commonjs'
+import replace from '@rollup/plugin-replace'
+
 const getPath = _path => path.resolve(__dirname, _path)
 
 export default {
@@ -26,10 +27,9 @@ export default {
   ],
   plugins: [
     typescript({
-      tsconfig: getPath('../../tsconfig.json'), // 导入本地ts配置
+      tsconfig: getPath('../../tsconfig.json'),
       extensions: ['.js', '.ts']
     }),
-    // 此插件应放在其他插件之前，以便优化代码
     replace({
       preventAssignment: true,
       'process.env.NODE_ENV': JSON.stringify('production')
@@ -51,9 +51,9 @@ export default {
     }),
     commonjs(
       {
-        sourceMap: false // 不映射源文件，提高性能
+        sourceMap: false
       }
     )
   ],
-  external: ['fs'] // 忽略的依赖
+  external: ['fs']
 }
