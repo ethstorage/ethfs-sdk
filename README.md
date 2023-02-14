@@ -1,5 +1,5 @@
 # ethfs-sdk
-An sdk for uploading files to the ethstorage network.
+EthStorage upload file sdk.
 
 ## Installation
 
@@ -15,12 +15,14 @@ $ npm install ethfs-sdk
 ```js
 import {DirectoryContractFactory, DirectoryContractFactoryByRPC, createDirectory} from "ethfs-sdk";
 
+const provider = window.ethereum;
+const rpc = "https://galileo.web3q.io:8545";
 const privateKey = "0x...";
 
 
-const factory = DirectoryContractFactory(window.ethereum);
+const factory = DirectoryContractFactory(provider);
 or
-const factory = DirectoryContractFactoryByRPC("https://galileo.web3q.io:8545", privateKey);
+const factory = DirectoryContractFactoryByRPC(rpc, privateKey);
 
 
 const address = await createDirectory(factory);
@@ -34,25 +36,25 @@ const address = await createDirectory(factory);
 import {DirectoryContract, DirectoryContractByRPC, upload} from "ethfs-sdk";
 
 const contractAddress = "0xC7c5CB39D5be1626c782C980b6008AC157DbC49d";
+const provider = window.ethereum;
+const rpc = "https://galileo.web3q.io:8545";
 const privateKey = "";
 
 
-const contract = DirectoryContract(window.ethereum, contractAddress);
+const contract = DirectoryContract(provider, contractAddress);
 or
-const contract = DirectoryContractByRPC("https://galileo.web3q.io:8545", privateKey, contractAddress);
+const contract = DirectoryContractByRPC(rpc, privateKey, contractAddress);
 
-
-const onProgress = (chunkIndex, totalChunk, fileName) => {
-}
-const onSuccess = (fileName) => {
-}
-const onError = (message) => {
-}
+// callback, can be null
+const onProgress = (chunkIndex, totalChunk, fileName) => {}
+const onSuccess = (fileName) => {}
+const onError = (message) => {}
 
 const fileName = "0.jpeg";
 const fileSize = 1024;
 const content = Buffer;
 const dirPath = "test/" // "" means the file is in the root directory
-await upload(contract, fileName, fileSize, content, "", onProgress, onSuccess, onError);
+await upload(contract, fileName, fileSize, content, dirPath,
+    onProgress, onSuccess, onError);
 // file path: 0xC7c5CB39D5be1626c782C980b6008AC157DbC49d/test/0.jpeg
 ```
