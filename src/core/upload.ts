@@ -1,5 +1,4 @@
 import {ContractInterface, ethers} from "ethers";
-import fs from "fs";
 const sha3 = require('js-sha3').keccak_256;
 
 const fileAbi: ContractInterface = [
@@ -84,7 +83,7 @@ function FileContract (_provider, _address) {
 const noop = () => {};
 
 async function upload(provider, address,
-                      file: File | string,
+                      file: File,
                       dirPath: string = "",
                       onProgress: Function = noop,
                       onSuccess: Function = noop,
@@ -103,25 +102,9 @@ async function upload(provider, address,
   const {chainId} = await contract.provider.getNetwork()
 
   // load file
-  let content, name, fileSize;
-  if (typeof file === 'string') {
-    // path
-    const fileStat = fs.statSync(file);
-    if (fileStat.isFile()) {
-      content = fs.readFileSync(file);
-      name = file.substring(file.lastIndexOf("/") + 1)
-      name = dirPath ? dirPath + name : name;
-      fileSize = fileStat.size;
-    } else {
-      onError(`Not support file dir, file dir: ${file}`);
-      return;
-    }
-  } else {
-    // raw file
-    content = await readFile(file);
-    name = dirPath ? dirPath + file.name : file.name;
-    fileSize = file.size;
-  }
+  const content = await readFile(file);
+  const name = dirPath ? dirPath + file.name : file.name;
+  let fileSize = file.size;
   const hexName = stringToHex(name);
 
 

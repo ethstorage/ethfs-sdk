@@ -21,7 +21,7 @@ import {upload} from "ethfs-sdk";
 upload(
     provider, // window.ethereum
     address, // contract address
-    file: File | string,
+    file: File, // 
     dirPath: string = "", // The file is in the root directory by default
     onProgress: Function = noop,
     onSuccess: Function = noop,
@@ -41,9 +41,16 @@ function onError(s) {
 
 const contractAddress = "0xCda64Cb111ED359716CC91dAfd5cb0ffB66A524d";
 
-// const file = "from <input />";
+// from <input />
+const file = {
+    size: 100,
+    name: test.png,
+    ...
+};
 
-await upload(window.ethereum, contractAddress, file, "",
+const dirPath = "test/";
+
+await upload(window.ethereum, contractAddress, file, dirPath,
     onProgress, onSuccess, onError);
-
+// file path: 0xCda64Cb111ED359716CC91dAfd5cb0ffB66A524d/test/test.png
 ```
