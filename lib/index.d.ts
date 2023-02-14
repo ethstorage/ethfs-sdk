@@ -1,12 +1,12 @@
-import { FileAbi, FlatDirectoryAbi, FlatDirectory, FlatDirectoryByRPC, FlatDirectoryFactory, FlatDirectoryFactoryByRPC, upload, createDirectory } from './core/upload';
-export { FileAbi, FlatDirectoryAbi, FlatDirectory, FlatDirectoryByRPC, FlatDirectoryFactory, FlatDirectoryFactoryByRPC, upload, createDirectory };
+import { FileAbi, FlatDirectoryAbi, DirectoryContract, DirectoryContractByRPC, DirectoryContractFactory, DirectoryContractFactoryByRPC, upload, createDirectory } from './core/upload';
+export { FileAbi, FlatDirectoryAbi, DirectoryContract, DirectoryContractByRPC, DirectoryContractFactory, DirectoryContractFactoryByRPC, upload, createDirectory };
 declare const _default: {
     FileAbi: string[];
     FlatDirectoryAbi: string[];
-    FlatDirectory: typeof FlatDirectory;
-    FlatDirectoryByRPC: typeof FlatDirectoryByRPC;
-    FlatDirectoryFactory: typeof FlatDirectoryFactory;
-    FlatDirectoryFactoryByRPC: typeof FlatDirectoryFactoryByRPC;
+    DirectoryContract: typeof DirectoryContract;
+    DirectoryContractByRPC: typeof DirectoryContractByRPC;
+    DirectoryContractFactory: typeof DirectoryContractFactory;
+    DirectoryContractFactoryByRPC: typeof DirectoryContractFactoryByRPC;
     upload: typeof upload;
     createDirectory: typeof createDirectory;
 };

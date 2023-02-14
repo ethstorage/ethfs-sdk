@@ -27,24 +27,24 @@ const REMOVE_SUCCESS = 1;
 
 const noop = () => {};
 
-export function FlatDirectory(_provider, _address) {
+export function DirectoryContract(_provider, _address) {
   let provider = new ethers.providers.Web3Provider(_provider);
   let contract = new Contract(_address, FileAbi, provider);
   return contract.connect(provider.getSigner());
 }
 
-export function FlatDirectoryByRPC(_providerUrl, _privateKey, _address) {
+export function DirectoryContractByRPC(_providerUrl, _privateKey, _address) {
   const provider = new ethers.providers.JsonRpcProvider(_providerUrl);
   const wallet = new ethers.Wallet(_privateKey, provider);
   return new Contract(_address, FileAbi, wallet);
 }
 
-export function FlatDirectoryFactory(_provider) {
+export function DirectoryContractFactory(_provider) {
   let provider = new ethers.providers.Web3Provider(_provider);
   return new ContractFactory(FlatDirectoryAbi, contractByteCode, provider.getSigner());
 }
 
-export function FlatDirectoryFactoryByRPC(_providerUrl, _privateKey) {
+export function DirectoryContractFactoryByRPC(_providerUrl, _privateKey) {
   const provider = new ethers.providers.JsonRpcProvider(_providerUrl);
   const wallet = new ethers.Wallet(_privateKey, provider);
   return new ContractFactory(FlatDirectoryAbi, contractByteCode, wallet);
