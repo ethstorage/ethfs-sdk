@@ -1,7 +1,27 @@
-import upload from './core/upload'
+import {
+  FileAbi, FlatDirectoryAbi,
+  FlatDirectory, FlatDirectoryByRPC,
+  FlatDirectoryFactory, FlatDirectoryFactoryByRPC,
+  upload, createDirectory
+} from './core/upload';
+
 export {
-  upload
+  FileAbi,
+  FlatDirectoryAbi,
+  FlatDirectory,
+  FlatDirectoryByRPC,
+  FlatDirectoryFactory,
+  FlatDirectoryFactoryByRPC,
+  upload,
+  createDirectory
 }
 export default {
-  upload
+  FileAbi,
+  FlatDirectoryAbi,
+  FlatDirectory,
+  FlatDirectoryByRPC,
+  FlatDirectoryFactory,
+  FlatDirectoryFactoryByRPC,
+  upload,
+  createDirectory
 }
