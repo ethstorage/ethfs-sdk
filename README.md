@@ -32,8 +32,8 @@ const signer = new ethers.Wallet(privateKey, provider);
 ```js
 import {createDirectory} from "ethfs-sdk";
 
-const singer = getSinger(); 
-const directoryAddress = await createDirectory(singer);
+const signer = getSigner(); 
+const directoryAddress = await createDirectory(signer);
 // 0xC7c5CB39D5be1626c782C980b6008AC157DbC49d
 ```
 
@@ -43,7 +43,7 @@ const directoryAddress = await createDirectory(singer);
 ```js
 import {upload} from "ethfs-sdk";
 
-const singer = getSinger();
+const signer = getSigner();
 const contract = "0xC7c5CB39D5be1626c782C980b6008AC157DbC49d";
 
 const fileName = "0.jpeg";
@@ -63,7 +63,7 @@ const onError = (message) => {
 // ...
 }
 
-await upload(singer, contract, fileName, fileSize, content, dirPath,
+await upload(signer, contract, fileName, fileSize, content, dirPath,
     onProgress, onSuccess, onError);
 // file path: 0xC7c5CB39D5be1626c782C980b6008AC157DbC49d/test/0.jpeg
 ```
