@@ -10,22 +10,30 @@ $ npm install ethfs-sdk
 ```
 
 ## Usage
+
+### Get Signer
+```js
+const provider = new ethers.providers.Web3Provider(window.ethereum);
+const signer = provider.getSigner();
+
+
+or
+
+
+const rpc = "https://galileo.web3q.io:8545";
+const privateKey = "0x...";
+const provider = new ethers.providers.JsonRpcProvider(rpc);
+const signer = new ethers.Wallet(privateKey, provider);
+```
+
+
 ### Create FlatDirectory
 
 ```js
-import {DirectoryContractFactory, DirectoryContractFactoryByRPC, createDirectory} from "ethfs-sdk";
+import {createDirectory} from "ethfs-sdk";
 
-const provider = window.ethereum;
-const rpc = "https://galileo.web3q.io:8545";
-const privateKey = "0x...";
-
-
-const factory = DirectoryContractFactory(provider);
-or
-const factory = DirectoryContractFactoryByRPC(rpc, privateKey);
-
-
-const address = await createDirectory(factory);
+const singer = getSinger(); 
+const directoryAddress = await createDirectory(singer);
 // 0xC7c5CB39D5be1626c782C980b6008AC157DbC49d
 ```
 
@@ -33,28 +41,29 @@ const address = await createDirectory(factory);
 ### Upload file
 
 ```js
-import {DirectoryContract, DirectoryContractByRPC, upload} from "ethfs-sdk";
+import {upload} from "ethfs-sdk";
 
-const contractAddress = "0xC7c5CB39D5be1626c782C980b6008AC157DbC49d";
-const provider = window.ethereum;
-const rpc = "https://galileo.web3q.io:8545";
-const privateKey = "";
-
-
-const contract = DirectoryContract(provider, contractAddress);
-or
-const contract = DirectoryContractByRPC(rpc, privateKey, contractAddress);
-
-// callback, can be null
-const onProgress = (chunkIndex, totalChunk, fileName) => {}
-const onSuccess = (fileName) => {}
-const onError = (message) => {}
+const singer = getSinger();
+const contract = "0xC7c5CB39D5be1626c782C980b6008AC157DbC49d";
 
 const fileName = "0.jpeg";
 const fileSize = 1024;
 const content = Buffer;
-const dirPath = "test/" // "" means the file is in the root directory
-await upload(contract, fileName, fileSize, content, dirPath,
+// "" means the file is in the root directory
+const dirPath = "test/";
+
+// callback, can be null
+const onProgress = (chunkIndex, totalChunk, fileName) => {
+// ...
+}
+const onSuccess = (fileName) => {
+// ...
+}
+const onError = (message) => {
+// ...
+}
+
+await upload(singer, contract, fileName, fileSize, content, dirPath,
     onProgress, onSuccess, onError);
 // file path: 0xC7c5CB39D5be1626c782C980b6008AC157DbC49d/test/0.jpeg
 ```
