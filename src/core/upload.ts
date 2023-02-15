@@ -1,4 +1,4 @@
-import {Contract, ContractFactory, ethers} from "ethers";
+import {Contract, ContractFactory, Signer, ethers} from "ethers";
 const sha3 = require('js-sha3').keccak_256;
 
 export const FileAbi = [
@@ -26,29 +26,6 @@ const REMOVE_NORMAL = 0;
 const REMOVE_SUCCESS = 1;
 
 const noop = () => {};
-
-export function DirectoryContract(_provider, _address) {
-  let provider = new ethers.providers.Web3Provider(_provider);
-  let contract = new Contract(_address, FileAbi, provider);
-  return contract.connect(provider.getSigner());
-}
-
-export function DirectoryContractByRPC(_providerUrl, _privateKey, _address) {
-  const provider = new ethers.providers.JsonRpcProvider(_providerUrl);
-  const wallet = new ethers.Wallet(_privateKey, provider);
-  return new Contract(_address, FileAbi, wallet);
-}
-
-export function DirectoryContractFactory(_provider) {
-  let provider = new ethers.providers.Web3Provider(_provider);
-  return new ContractFactory(FlatDirectoryAbi, contractByteCode, provider.getSigner());
-}
-
-export function DirectoryContractFactoryByRPC(_providerUrl, _privateKey) {
-  const provider = new ethers.providers.JsonRpcProvider(_providerUrl);
-  const wallet = new ethers.Wallet(_privateKey, provider);
-  return new ContractFactory(FlatDirectoryAbi, contractByteCode, wallet);
-}
 
 const bufferChunk = (buffer, chunkSize) => {
   let i = 0;
@@ -88,7 +65,8 @@ async function checkAndDelete(contract, hexName, chunkLength) {
 }
 
 export async function upload(
-    contract: Contract,
+    signer: Signer,
+    address: string,
     fileName: string,
     fileSize: number,
     fileData: Buffer,
@@ -97,8 +75,12 @@ export async function upload(
     onSuccess: Function = noop,
     onError: Function = noop
 ) {
-  if (!contract) {
-    onError(`missing contract object!`);
+  if (!signer) {
+    onError(`missing provider obj!`);
+    return;
+  }
+  if (!address) {
+    onError(`missing contract address!`);
     return;
   }
   if (!fileName || fileSize <= 0 || !fileData) {
@@ -107,6 +89,7 @@ export async function upload(
   }
 
   // init
+  const contract = new Contract(address, FileAbi, signer);
   const {chainId} = await contract.provider.getNetwork()
   const name = dirPath ? dirPath + fileName : fileName;
   const hexName = stringToHex(name);
@@ -185,7 +168,8 @@ export async function upload(
   onSuccess(fileName);
 }
 
-export async function createDirectory(factory: ContractFactory) {
+export async function createDirectory(signer: Signer) {
+  const factory = new ContractFactory(FlatDirectoryAbi, contractByteCode, signer);
   const contract = await factory.deploy(0, {gasLimit: 3000000});
   await contract.deployed();
   if (contract) {
