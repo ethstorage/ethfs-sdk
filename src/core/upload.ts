@@ -70,7 +70,6 @@ export async function upload(
     fileName: string,
     fileSize: number,
     fileData: Buffer,
-    dirPath: string = "",
     onProgress: Function = noop,
     onSuccess: Function = noop,
     onError: Function = noop
@@ -91,8 +90,7 @@ export async function upload(
   // init
   const contract = new Contract(address, FileAbi, signer);
   const {chainId} = await contract.provider.getNetwork()
-  const name = dirPath ? dirPath + fileName : fileName;
-  const hexName = stringToHex(name);
+  const hexName = stringToHex(fileName);
   const content = fileData;
 
   // Data need to be sliced if file > 475K

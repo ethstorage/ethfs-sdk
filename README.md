@@ -10,6 +10,7 @@ $ npm install ethfs-sdk
 ```
 
 ## Usage
+The specific usage tutorial can be accessed [here](https://docs.web3url.io/tutorials/upload-your-first-file-with-ethfs-sdk).
 
 ### Get Signer
 ```js
@@ -51,6 +52,7 @@ const fileSize = 1024;
 const content = Buffer;
 // "" means the file is in the root directory
 const dirPath = "test/";
+const directoryName = dirPath + fileName;
 
 // callback, can be null
 const onProgress = (chunkIndex, totalChunk, fileName) => {
@@ -63,7 +65,7 @@ const onError = (message) => {
 // ...
 }
 
-await upload(signer, contract, fileName, fileSize, content, dirPath,
+await upload(signer, contract, directoryName, fileSize, content,
     onProgress, onSuccess, onError);
 // file path: 0xC7c5CB39D5be1626c782C980b6008AC157DbC49d/test/0.jpeg
 ```
