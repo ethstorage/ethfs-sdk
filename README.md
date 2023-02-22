@@ -52,7 +52,7 @@ const fileSize = 1024;
 const content = Buffer;
 // "" means the file is in the root directory
 const dirPath = "test/";
-const directoryName = dirPath + fileName;
+const directoryPath = dirPath + fileName;
 
 // callback, can be null
 const onProgress = (chunkIndex, totalChunk, fileName) => {
@@ -65,7 +65,7 @@ const onError = (message) => {
 // ...
 }
 
-await upload(signer, contract, directoryName, fileSize, content,
+await upload(signer, contract, directoryPath, fileSize, content,
     onProgress, onSuccess, onError);
 // file path: 0xC7c5CB39D5be1626c782C980b6008AC157DbC49d/test/0.jpeg
 ```

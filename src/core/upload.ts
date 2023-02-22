@@ -67,7 +67,7 @@ async function checkAndDelete(contract, hexName, chunkLength) {
 export async function upload(
     signer: Signer,
     address: string,
-    fileName: string,
+    directoryPath: string,
     fileSize: number,
     fileData: Buffer,
     onProgress: Function = noop,
@@ -82,7 +82,7 @@ export async function upload(
     onError(`missing contract address!`);
     return;
   }
-  if (!fileName || fileSize <= 0 || !fileData) {
+  if (!directoryPath || fileSize <= 0 || !fileData) {
     onError(`missing file!`);
     return;
   }
@@ -90,7 +90,7 @@ export async function upload(
   // init
   const contract = new Contract(address, FileAbi, signer);
   const {chainId} = await contract.provider.getNetwork()
-  const hexName = stringToHex(fileName);
+  const hexName = stringToHex(directoryPath);
   const content = fileData;
 
   // Data need to be sliced if file > 475K
@@ -128,7 +128,7 @@ export async function upload(
     cost = Math.floor((fileSize + 326) / 1024 / 24);
   }
 
-  onProgress(0, chunks.length, fileName);
+  onProgress(0, chunks.length, directoryPath);
   let uploadState = true;
   for (const index in chunks) {
     const chunk = chunks[index];
@@ -140,7 +140,7 @@ export async function upload(
       let hash = await contract.getChunkHash(hexName, index);
       if (localHash === hash) {
         console.log(`File chunkId: ${index}: The data is not changed.`);
-        onProgress(index, chunks.length, fileName);
+        onProgress(index, chunks.length, directoryPath);
         continue;
       }
     }
@@ -161,9 +161,9 @@ export async function upload(
       onError(`File chunkId: ${index} upload fail`);
       break;
     }
-    onProgress(index, chunks.length, fileName);
+    onProgress(index, chunks.length, directoryPath);
   }
-  onSuccess(fileName);
+  onSuccess(directoryPath);
 }
 
 export async function createDirectory(signer: Signer) {
